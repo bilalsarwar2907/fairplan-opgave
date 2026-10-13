@@ -14,6 +14,7 @@ builder.Services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbConte
 builder.Services.AddScoped<PeriodService>();
 builder.Services.AddScoped<SectionService>();
 builder.Services.AddScoped<StaffGroupService>();
+builder.Services.AddScoped<UserService>();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
