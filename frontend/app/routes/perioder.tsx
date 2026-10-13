@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "~/services/apiService";
 import { DataTable } from "~/components/DataTable";
 import { PeriodForm, type Period, type PeriodRequest } from "~/components/forms/PeriodForm";
-import type { Section } from "~/components/forms/SectionForm";
+
 
 // "2026-12-01" → "01-12-2026"
 const formatDate = (iso: string) => iso.split("-").reverse().join("-");
@@ -11,15 +11,15 @@ export default function Perioder() {
   const [periods, setPeriods] = useState<Period[]>([]);
   const [editing, setEditing] = useState<Period | null>(null);
   const [error, setError] = useState("");
-  const [sections, setSections] = useState<Section[]>([]);
+ 
 
-  async function load() {
-  try {
-    setSections(await api.get<Section[]>("/api/sections"));
-  } catch (e) {
-    setError((e as Error).message);
+   async function load() {
+    try {
+      setPeriods(await api.get<Period[]>("/api/periods"));
+    } catch (e) {
+      setError((e as Error).message);
+    }
   }
-}
   useEffect(() => { load(); }, []);
 
   async function save(data: PeriodRequest) {
