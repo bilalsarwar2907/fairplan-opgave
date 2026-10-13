@@ -1,7 +1,9 @@
 using Application.Interfaces;
-using Infrastructure.Persistence.Contexts;
+using Application.Services;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -9,6 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
+builder.Services.AddScoped<PeriodService>();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
@@ -25,7 +28,10 @@ using (var scope = app.Services.CreateScope())
     DbSeeder.Seed(db);
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
