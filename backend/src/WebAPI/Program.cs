@@ -22,7 +22,8 @@ builder.Services.AddScoped<EmploymentService>();
 builder.Services.AddScoped<PersonnelService>();
 
 // Controllers + Danish error for broken/missing request data
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+        options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
     .ConfigureApiBehaviorOptions(options =>
     {
         options.InvalidModelStateResponseFactory = context =>
