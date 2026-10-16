@@ -33,7 +33,7 @@ namespace Application.Services
                 ?? throw new BusinessException("Brugeren findes ikke.", 404);
             var email = await ValidateAsync(req, excludeId: id);
 
-            // D16: can't remove the personnel role while the user has employments (protects E3)
+            // U4: keep the Personale role while the user has employments (E3)
             if (user.IsPersonnel && !req.IsPersonnel && await _db.Employments.AnyAsync(e => e.UserId == id))
                 throw new BusinessException("Personalerollen kan ikke fjernes, fordi brugeren har ansættelser.", 409);
 
@@ -71,7 +71,7 @@ namespace Application.Services
             if (!req.IsAdmin && !req.IsPersonnel)
                 throw new BusinessException("Brugeren skal have mindst én rolle (Admin eller Personale).");
 
-            // U2: email unique, case-insensitive (D15)
+            // U2: email must be unique, case-insensitive
             var email = req.Email.Trim().ToLowerInvariant();
             if (await _db.Users.AnyAsync(u => u.Email == email && u.Id != excludeId))
                 throw new BusinessException("Email er allerede i brug.", 409);

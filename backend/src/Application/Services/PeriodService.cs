@@ -30,7 +30,7 @@ namespace Application.Services
         {
             var period = await _db.Periods.FindAsync(id)
                 ?? throw new BusinessException("Perioden findes ikke.", 404);
-            await ValidateAsync(req, excludeId: id);     // D14: ignore itself
+            await ValidateAsync(req, excludeId: id);     // skip the period we are editing
             period.Name = req.Name.Trim();
             period.StartDate = req.StartDate;
             period.EndDate = req.EndDate;
